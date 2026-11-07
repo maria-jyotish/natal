@@ -6,40 +6,43 @@
 <title>Jyotish Birth Chart</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* Layout: centered form card on warm paper; results = varga tabs, then chart | details side by side, then panchanga | karakas, then dasha timeline. */
 :root{
-  --paper:#faf7f1;
+  /* Astrokunst palette: royal navy #022980 + gold #FAD571 + light yellow fields */
+  --paper:#fafaff;
   --card:#ffffff;
-  --ink:#1c1a17;
-  --muted:#6f685e;
-  --line:#e7e0d4;
-  --soft:#f2ede4;
-  --accent:#d39a55;        /* amber button */
-  --accent-ink:#2a1a0c;
-  --brand:#8a3b17;         /* rust: headings accents, active tab */
-  --planet:#b3261e;        /* planets in chart */
-  --asc:#6b3fa0;           /* ascendant marker */
-  --sign:#5d6472;          /* sign numbers in chart */
-  --aspect:#a49d92;
+  --ink:#022980;
+  --muted:#5b6890;
+  --line:#dde4f3;
+  --soft:#f1f4fc;
+  --accent:#fad571;        /* gold button */
+  --accent-ink:#022980;
+  --brand:#022980;
+  --planet:#022980;        /* planets in chart */
+  --asc:#a5730a;           /* ascendant marker: dark gold */
+  --sign:#8792b8;          /* sign numbers in chart */
+  --aspect:#a9b1cc;
   --good:#2f7d4f; --bad:#b3261e;
-  --hl:#fdf3e2;
-  --display:"Lora", Georgia, "Times New Roman", serif;
+  --hl:#fff4d1;
+  --field:#fff8e3;         /* light-yellow input fields */
+  --fieldline:#f1dc9a;
+  --display:"Cormorant Garamond", Georgia, "Times New Roman", serif;
   --body:"Golos Text", -apple-system, "Segoe UI", Arial, sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#17150f; --card:#211e18; --ink:#efe9df; --muted:#a79f92; --line:#3a352c; --soft:#2a2620;
-    --accent:#e0a862; --accent-ink:#1e1409; --brand:#e8915f; --planet:#ff8a7a; --asc:#c4a3f0; --sign:#a3aab8;
-    --aspect:#7d766b; --good:#6fcf97; --bad:#ff8a7a; --hl:#3a2f1e; color-scheme:dark;
+    --paper:#081634; --card:#0f2150; --ink:#f3ead0; --muted:#a9b3d3; --line:#24366b; --soft:#14285e;
+    --accent:#fad571; --accent-ink:#022980; --brand:#fad571; --planet:#ffe69c; --asc:#f7c85a; --sign:#8f9cc8;
+    --aspect:#6c7aa8; --good:#6fcf97; --bad:#ff8a7a; --hl:#1d3270; --field:#14285e; --fieldline:#2c4384; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#17150f; --card:#211e18; --ink:#efe9df; --muted:#a79f92; --line:#3a352c; --soft:#2a2620;
-  --accent:#e0a862; --accent-ink:#1e1409; --brand:#e8915f; --planet:#ff8a7a; --asc:#c4a3f0; --sign:#a3aab8;
-  --aspect:#7d766b; --good:#6fcf97; --bad:#ff8a7a; --hl:#3a2f1e; color-scheme:dark;
+  --paper:#081634; --card:#0f2150; --ink:#f3ead0; --muted:#a9b3d3; --line:#24366b; --soft:#14285e;
+  --accent:#fad571; --accent-ink:#022980; --brand:#fad571; --planet:#ffe69c; --asc:#f7c85a; --sign:#8f9cc8;
+  --aspect:#6c7aa8; --good:#6fcf97; --bad:#ff8a7a; --hl:#1d3270; --field:#14285e; --fieldline:#2c4384; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -53,9 +56,10 @@ header.top{max-width:1180px;margin:0 auto;padding:16px 20px;display:flex;align-i
 main{max-width:1180px;margin:0 auto;padding:8px 20px 64px;display:grid;gap:22px}
 .hero{text-align:center;display:grid;gap:12px;justify-items:center;padding:8px 0 4px}
 h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
-h1{font-size:clamp(28px,4.6vw,44px);line-height:1.15}
-h2{font-size:21px}
-h3{font-size:16px}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.1;text-transform:uppercase;letter-spacing:.03em;font-weight:700}
+h2{font-size:25px;font-weight:700}
+h3{font-size:20px;font-weight:700}
+.hero::after{content:"";width:64px;height:2px;background:var(--accent);border-radius:2px}
 .sub{margin:0;font-size:13.5px;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
 .formcard{max-width:780px;width:100%;margin:0 auto;display:grid;gap:16px}
@@ -64,7 +68,7 @@ h3{font-size:16px}
 .hint{font-size:12.5px;color:var(--muted);margin:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-input,select{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%;min-width:0}
+input,select{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--fieldline);border-radius:10px;padding:9px 12px;width:100%;min-width:0}
 input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 input.invalid{border-color:var(--bad)}
 .loc{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:12px}
@@ -79,16 +83,17 @@ input.invalid{border-color:var(--bad)}
 .suggest button:hover,.suggest button.on{background:var(--hl)}
 details.settings summary{cursor:pointer;font-weight:600;font-size:14px}
 details.settings .grid2{margin-top:10px}
-.btn{font:inherit;font-weight:600;background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:12px 28px;cursor:pointer;justify-self:center}
+.btn{font:inherit;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.06em;background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:14px 32px;cursor:pointer;justify-self:center;box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 45%,transparent)}
+.formcard{box-shadow:0 6px 24px rgba(2,41,128,.07)}
 .btn:hover{filter:brightness(1.05)}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:7px 14px;font-weight:500;font-size:13px;border-radius:10px}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:7px 14px;font-weight:500;font-size:13px;border-radius:6px;text-transform:none;letter-spacing:0;box-shadow:none}
 .err{color:var(--bad);font-size:13.5px;margin:0;min-height:1em;text-align:center}
 /* results */
 .reshead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
 .reshead p{margin:0;color:var(--muted);font-size:14px}
 .tabs{display:flex;gap:4px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:5px}
 .tabs button{font:inherit;font-size:14px;border:0;background:none;color:var(--muted);padding:7px 12px;border-radius:10px;cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--soft);color:var(--ink);font-weight:600}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
 .cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px;align-items:start}
 .chartcard{display:grid;gap:10px}
 .charttools{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -877,7 +882,7 @@ function render(){
   const curMd=c.dasha.find(m=>now>=m.s&&now<m.e), curAd=curMd&&curMd.ad.find(a=>now>=a.s&&now<a.e);
   const total=c.dasha[8].e-c.dasha[0].s;
   const bar=c.dasha.map((m,i)=>{const w=(Math.min(m.e,c.dasha[8].e)-Math.max(m.s,c.dasha[0].s))/total*100;
-    const tone=["#e9d7bd","#f1e4cf"][i%2];
+    const tone=["#ffe69c","#fff3cf"][i%2];
     return `<div style="width:${w}%;background:color-mix(in srgb,${tone} 70%,var(--card))" class="${m===curMd?"now":""}" title="${esc(pn[m.lord])} ${fmtDate(m.s)} – ${fmtDate(m.e)}">${esc(D("pab")[m.lord])}</div>`;}).join("");
   const mdList=c.dasha.map(m=>{
     const isCur=m===curMd;
