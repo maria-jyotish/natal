@@ -50,6 +50,7 @@ body{background:var(--paper);color:var(--ink);font:15px/1.55 var(--body)}
 header.top{max-width:1180px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:19px}
 .brand svg{width:26px;height:26px}
+.seg[hidden]{display:none}
 .seg{display:inline-flex;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:3px}
 .seg button{font:inherit;font-size:13px;font-weight:500;border:0;background:none;color:var(--muted);padding:5px 12px;border-radius:999px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
@@ -158,6 +159,7 @@ tbody tr:hover{background:var(--hl)}
   <div class="seg" role="group" aria-label="Language / Язык">
     <button type="button" data-lang="en" aria-pressed="true">EN</button>
     <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+    <button type="button" data-lang="et" aria-pressed="false">ET</button>
   </div>
 </header>
 
@@ -283,8 +285,47 @@ const DATA={
  karana:{en:["Bava","Balava","Kaulava","Taitila","Gara","Vanija","Vishti","Shakuni","Chatushpada","Naga","Kimstughna"],
          ru:["Бава","Балава","Каулава","Тайтила","Гара","Ваниджа","Вишти","Шакуни","Чатушпада","Нага","Кимстугхна"]}
 };
-let LANG="en";
-try{const s=localStorage.getItem("vjc-lang");if(s==="ru"||s==="en")LANG=s;else if((navigator.language||"").startsWith("ru"))LANG="ru";}catch(e){}
+/* ---------- Estonian ---------- */
+I18N.et={
+ brand:"Jyotishi kaart",h1:"Sinu veeda sünnikaart",p1:"See on tasuta, registreerimist pole vaja",
+ fName:"Nimi (valikuline)",fDate:"Sünnikuupäev ja kellaaeg",fLoc:"Vali, kuidas sünnikoht sisestada",mCity:"Otsi linna",mCityS:"54 000 kohta. Ajavöönd määratakse automaatselt.",
+ mCoord:"Sisesta koordinaadid",mCoordS:"Laius, pikkus ja ajavöönd.",fCity:"Sünnilinn",cityPh:"Hakka kirjutama, nt Tallinn või Tartu",fLat:"Laiuskraad",fLon:"Pikkuskraad",fTz:"Nihe UTC suhtes",
+ coordHint:"Kümnendkraadid: põhi ja ida plussmärgiga, lõuna ja lääs miinusmärgiga. Nihe kujul +5:30 või -4.",
+ fSet:"Arvutuse seaded",fStyle:"Kaardi stiil",north:"Põhja-India",south:"Lõuna-India",fNode:"Kuusõlmed",mean:"Keskmine sõlm",true:"Tõeline sõlm",
+ setHint:"Sideeriline sodiaak, Lahiri ayanamsa, tõelised kuusõlmed, terve märgi majad.",go:"Koosta kaart",
+ foot:"Asendid arvutab avatud lähtekoodiga Astronomy Engine (täpsus umbes ±1′). Sisestatud andmed ei lahku sinu brauserist.",
+ cityNone:"54 000 koha seast vastet ei leitud. Kontrolli kirjapilti või vali „Sisesta koordinaadid”.",cityTz:(tz,off)=>`Ajavöönd ${tz}, sel kuupäeval ${off}.`,
+ errDate:"Sisesta sünnikuupäev ja kellaaeg.",errCity:"Vali linn loendist või sisesta koordinaadid.",errCoord:"Kontrolli laiuskraadi (−90…90), pikkuskraadi (−180…180) ja nihet (nt +2:00).",
+ skyNow:"Taevas praegu",sample:"Näidatakse praegust taevast. Sisesta ülal oma andmed, et koostada oma kaart.",
+ vargas:{D1:"D1 Rashi",D3:"D3 Drekkana",D4:"D4 Chaturthamsha",D7:"D7 Saptamsha",D9:"D9 Navamsha",D10:"D10 Dashamsha",D12:"D12 Dvadashamsha"},
+ vargaAbout:{D1:"Sünnikaart: kogu elu",D3:"Õed-vennad, julgus",D4:"Kodu, vara, õnn",D7:"Lapsed",D9:"Abielu, sisemine jõud (dharma)",D10:"Karjäär, avalik elu",D12:"Vanemad"},
+ aspects:"Näita aspekte",copy:"Kopeeri kokkuvõte",copied:"Kopeeritud",
+ legend:"R retrograadne · ↑ ülendatud · ↓ langenud · alla joonitud: oma märk · hall: aspektid",
+ asc:"Ascendent",moonSign:"Kuu märk (Rashi)",moonNak:"Sünnitäht (Nakshatra)",ayan:"Ayanamsa",houses:"Majad",whole:"Terve märk",zodiac:"Sodiaak",sidereal:"Sideeriline (Lahiri)",nodes:"Sõlmed",
+ thPlanet:"Planeet",thSign:"Märk",thDeg:"Kraad",thNak:"Nakshatra",thPada:"Pada",thHouse:"Maja",thKar:"Karaka",thVsign:"Märk kaardil",
+ ex:"ülendatud",db:"langenud",ow:"oma",rt:"R",
+ panch:"Panchanga sünnihetkel",vara:"Nädalapäev (Vara)",tithi:"Kuupäev (Tithi)",yoga:"Yoga",karana:"Karana",nakshatra:"Nakshatra",sunrise:"Päikesetõus",beforeSunrise:"sündinud enne päikesetõusu, seega on veeda päev eelmine",
+ shukla:"Shukla",krishna:"Krishna",
+ karakasT:"Chara-karakad (Jaimini)",karNames:["Atmakaraka · hing","Amatyakaraka · karjäär","Bhratrikaraka · õed-vennad","Matrikaraka · ema","Putrakaraka · lapsed","Gnatikaraka · vastased","Darakaraka · abikaasa"],
+ nbT:"Langus ja selle tühistamine",nbNone:"Selles kaardis pole ühtegi langenud planeeti.",nbHas:(p,n)=>`${p}: ${n} ${n===1?"tühistamine":"tühistamist"} (neecha bhanga)`,
+ nb:{disp:p=>`Dispositor (${p}) on kendras`,exl:p=>`Ülendusmärgi valitseja (${p}) on kendras`,exh:p=>`Selles märgis ülendatud planeet (${p}) on kendras`,conj:p=>`Ühendus dispositoriga (${p})`,asp:p=>`Dispositori (${p}) aspekt`,xch:p=>`Märkide vahetus planeediga ${p}`,nav:()=>"Ülendatud navamshas",fromL:"lagnast",fromM:"Kuust",and:" ja "},
+ dashaT:"Vimshottari dasha",dashaLead:(p,a)=>`Praegune periood: ${p}${a?` / ${a}`:""}.`,dashaBal:(p,y)=>`Jääk sünnihetkel: ${p} ${y}.`,
+ mdH:["Mahadasha","Algus","Lõpp","Aastaid"],yrs:"a",mo:"k",
+ shareTitle:"Sünnikaart"
+};
+DATA.signs.et=["Jäär","Sõnn","Kaksikud","Vähk","Lõvi","Neitsi","Kaalud","Skorpion","Ambur","Kaljukits","Veevalaja","Kalad"];
+DATA.signAb.et=["Jää","Sõn","Kak","Väh","Lõv","Nei","Kaa","Sko","Amb","Klj","Vee","Kal"];
+DATA.nak.et=DATA.nak.en;
+DATA.planet.et={Asc:"Ascendent",Su:"Päike",Mo:"Kuu",Ma:"Marss",Me:"Merkuur",Ju:"Jupiter",Ve:"Veenus",Sa:"Saturn",Ra:"Rahu",Ke:"Ketu"};
+DATA.pab.et={Asc:"Asc",Su:"Pä",Mo:"Ku",Ma:"Ma",Me:"Me",Ju:"Ju",Ve:"Ve",Sa:"Sa",Ra:"Ra",Ke:"Ke"};
+DATA.kar.et=DATA.kar.en;
+DATA.vara.et=["Pühapäev (Ravivara)","Esmaspäev (Somavara)","Teisipäev (Mangalavara)","Kolmapäev (Budhavara)","Neljapäev (Guruvara)","Reede (Shukravara)","Laupäev (Shanivara)"];
+DATA.tithi.et=DATA.tithi.en; DATA.yoga.et=DATA.yoga.en; DATA.karana.et=DATA.karana.en;
+/* language: ?lang=ru|et|en in the address fixes it (and hides the switch); otherwise saved choice or browser language */
+const LANGS=["en","ru","et"];
+let LANG="en", LANG_FIXED=false;
+try{const q=new URLSearchParams(location.search).get("lang");if(LANGS.includes(q)){LANG=q;LANG_FIXED=true;}}catch(e){}
+if(!LANG_FIXED){try{const s=localStorage.getItem("vjc-lang");if(LANGS.includes(s))LANG=s;else{const n=(navigator.language||"").slice(0,2);if(n==="ru"||n==="et")LANG=n;}}catch(e){}}
 const t=(k,...a)=>{const v=I18N[LANG][k];return typeof v==="function"?v(...a):v;};
 const D=k=>DATA[k][LANG];
 function pluralRu(n,a,b,c){const m=n%100,k=n%10;if(m>=11&&m<=14)return c;if(k===1)return a;if(k>=2&&k<=4)return b;return c;}
@@ -788,9 +829,9 @@ function compute(input){
 const esc=s=>String(s).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
 function dms(x){let d=Math.floor(x),mf=(x-d)*60,m=Math.floor(mf),s=Math.round((mf-m)*60);if(s===60){s=0;m++;}if(m===60){m=0;d++;}return `${d}°${String(m).padStart(2,"0")}′${String(s).padStart(2,"0")}″`;}
 const pad=n=>String(n).padStart(2,"0");
-const fmtDate=ms=>new Intl.DateTimeFormat(LANG==="ru"?"ru-RU":"en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(ms));
+const fmtDate=ms=>new Intl.DateTimeFormat({ru:"ru-RU",et:"et-EE",en:"en-GB"}[LANG],{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(ms));
 function fmtYears(y){const Y=Math.floor(y),M=Math.round((y-Y)*12);return `${Y} ${t("yrs")} ${M} ${t("mo")}`;}
-const coordStr=(lat,lon)=>LANG==="ru"?`${Math.abs(lat).toFixed(2)}° ${lat<0?"ю. ш.":"с. ш."}, ${Math.abs(lon).toFixed(2)}° ${lon<0?"з. д.":"в. д."}`:`${Math.abs(lat).toFixed(2)}° ${lat<0?"S":"N"}, ${Math.abs(lon).toFixed(2)}° ${lon<0?"W":"E"}`;
+const coordStr=(lat,lon)=>LANG==="et"?`${Math.abs(lat).toFixed(2)}° ${lat<0?"l.l.":"p.l."}, ${Math.abs(lon).toFixed(2)}° ${lon<0?"l.p.":"i.p."}`:LANG==="ru"?`${Math.abs(lat).toFixed(2)}° ${lat<0?"ю. ш.":"с. ш."}, ${Math.abs(lon).toFixed(2)}° ${lon<0?"з. д.":"в. д."}`:`${Math.abs(lat).toFixed(2)}° ${lat<0?"S":"N"}, ${Math.abs(lon).toFixed(2)}° ${lon<0?"W":"E"}`;
 
 /* ================= charts ================= */
 const S=520;
@@ -962,7 +1003,8 @@ const $=id=>document.getElementById(id);
 let mode="city", chosen=null;
 function applyLang(){
   document.documentElement.lang=LANG;
-  document.title=LANG==="ru"?"Ведическая натальная карта":"Jyotish Birth Chart";
+  document.title={ru:"Ведическая натальная карта",et:"Veeda sünnikaart",en:"Jyotish Birth Chart"}[LANG];
+  const sw=document.querySelector("header .seg");if(sw)sw.hidden=LANG_FIXED;
   document.querySelectorAll("[data-i]").forEach(el=>{const v=I18N[LANG][el.dataset.i];if(typeof v==="string")el.textContent=v;});
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===LANG));
   $("city").placeholder=t("cityPh");
