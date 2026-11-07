@@ -191,13 +191,11 @@ tbody tr:hover{background:var(--hl)}
         <div class="field"><label for="lat" data-i="fLat">Latitude</label><input id="lat" inputmode="decimal" placeholder="59.437"></div>
         <div class="field"><label for="lon" data-i="fLon">Longitude</label><input id="lon" inputmode="decimal" placeholder="24.754"></div>
         <div class="field"><label for="tz" data-i="fTz">UTC offset</label><input id="tz" placeholder="+2:00"></div>
-        <p class="hint" style="grid-column:1/-1" data-i="coordHint">Decimal degrees: north and east positive, south and west negative. Offset as +5:30 or -4.</p>
       </div>
     </div>
     <div class="field">
       <label for="style" data-i="fStyle">Chart style</label>
       <select id="style"><option value="north" data-i="north">North Indian</option><option value="south" data-i="south">South Indian</option></select>
-      <p class="hint" data-i="setHint">Sidereal zodiac, Lahiri ayanamsa, true lunar nodes, whole-sign houses.</p>
     </div>
     <p class="err" id="err" role="alert"></p>
     <button class="btn" type="submit" data-i="go">Reveal my chart</button>
@@ -287,7 +285,7 @@ const DATA={
 };
 /* ---------- Estonian ---------- */
 I18N.et={
- brand:"Jyotishi kaart",h1:"Sinu veeda sünnikaart",p1:"See on tasuta, registreerimist pole vaja",
+ brand:"Jyotishi kaart",h1:"Sinu veedalik sünnikaart",p1:"See on tasuta, registreerimist pole vaja",
  fName:"Nimi (valikuline)",fDate:"Sünnikuupäev ja kellaaeg",fLoc:"Vali, kuidas sünnikoht sisestada",mCity:"Otsi linna",mCityS:"54 000 kohta. Ajavöönd määratakse automaatselt.",
  mCoord:"Sisesta koordinaadid",mCoordS:"Laius, pikkus ja ajavöönd.",fCity:"Sünnilinn",cityPh:"Hakka kirjutama, nt Tallinn või Tartu",fLat:"Laiuskraad",fLon:"Pikkuskraad",fTz:"Nihe UTC suhtes",
  coordHint:"Kümnendkraadid: põhi ja ida plussmärgiga, lõuna ja lääs miinusmärgiga. Nihe kujul +5:30 või -4.",
@@ -300,15 +298,15 @@ I18N.et={
  vargas:{D1:"D1 Rashi",D3:"D3 Drekkana",D4:"D4 Chaturthamsha",D7:"D7 Saptamsha",D9:"D9 Navamsha",D10:"D10 Dashamsha",D12:"D12 Dvadashamsha"},
  vargaAbout:{D1:"Sünnikaart: kogu elu",D3:"Õed-vennad, julgus",D4:"Kodu, vara, õnn",D7:"Lapsed",D9:"Abielu, sisemine jõud (dharma)",D10:"Karjäär, avalik elu",D12:"Vanemad"},
  aspects:"Näita aspekte",copy:"Kopeeri kokkuvõte",copied:"Kopeeritud",
- legend:"R retrograadne · ↑ ülendatud · ↓ langenud · alla joonitud: oma märk · hall: aspektid",
+ legend:"R retrograadne · ↑ eksalteerunud · ↓ debiliteerunud · alla joonitud: oma märk · hall: aspektid",
  asc:"Ascendent",moonSign:"Kuu märk (Rashi)",moonNak:"Sünnitäht (Nakshatra)",ayan:"Ayanamsa",houses:"Majad",whole:"Terve märk",zodiac:"Sodiaak",sidereal:"Sideeriline (Lahiri)",nodes:"Sõlmed",
  thPlanet:"Planeet",thSign:"Märk",thDeg:"Kraad",thNak:"Nakshatra",thPada:"Pada",thHouse:"Maja",thKar:"Karaka",thVsign:"Märk kaardil",
- ex:"ülendatud",db:"langenud",ow:"oma",rt:"R",
+ ex:"eksalteerunud",db:"debiliteerunud",ow:"oma",rt:"R",
  panch:"Panchanga sünnihetkel",vara:"Nädalapäev (Vara)",tithi:"Kuupäev (Tithi)",yoga:"Yoga",karana:"Karana",nakshatra:"Nakshatra",sunrise:"Päikesetõus",beforeSunrise:"sündinud enne päikesetõusu, seega on veeda päev eelmine",
  shukla:"Shukla",krishna:"Krishna",
  karakasT:"Chara-karakad (Jaimini)",karNames:["Atmakaraka · hing","Amatyakaraka · karjäär","Bhratrikaraka · õed-vennad","Matrikaraka · ema","Putrakaraka · lapsed","Gnatikaraka · vastased","Darakaraka · abikaasa"],
- nbT:"Langus ja selle tühistamine",nbNone:"Selles kaardis pole ühtegi langenud planeeti.",nbHas:(p,n)=>`${p}: ${n} ${n===1?"tühistamine":"tühistamist"} (neecha bhanga)`,
- nb:{disp:p=>`Dispositor (${p}) on kendras`,exl:p=>`Ülendusmärgi valitseja (${p}) on kendras`,exh:p=>`Selles märgis ülendatud planeet (${p}) on kendras`,conj:p=>`Ühendus dispositoriga (${p})`,asp:p=>`Dispositori (${p}) aspekt`,xch:p=>`Märkide vahetus planeediga ${p}`,nav:()=>"Ülendatud navamshas",fromL:"lagnast",fromM:"Kuust",and:" ja "},
+ nbT:"Debilitatsioon ja selle tühistamine",nbNone:"Selles kaardis pole ühtegi debiliteerunud planeeti.",nbHas:(p,n)=>`${p}: ${n} ${n===1?"tühistamine":"tühistamist"} (neecha bhanga)`,
+ nb:{disp:p=>`Dispositor (${p}) on kendras`,exl:p=>`Eksaltatsioonimärgi valitseja (${p}) on kendras`,exh:p=>`Selles märgis eksalteeruv planeet (${p}) on kendras`,conj:p=>`Ühendus dispositoriga (${p})`,asp:p=>`Dispositori (${p}) aspekt`,xch:p=>`Märkide vahetus planeediga ${p}`,nav:()=>"Eksalteerunud navamshas",fromL:"lagnast",fromM:"Kuust",and:" ja "},
  dashaT:"Vimshottari dasha",dashaLead:(p,a)=>`Praegune periood: ${p}${a?` / ${a}`:""}.`,dashaBal:(p,y)=>`Jääk sünnihetkel: ${p} ${y}.`,
  mdH:["Mahadasha","Algus","Lõpp","Aastaid"],yrs:"a",mo:"k",
  shareTitle:"Sünnikaart"
@@ -1003,7 +1001,7 @@ const $=id=>document.getElementById(id);
 let mode="city", chosen=null;
 function applyLang(){
   document.documentElement.lang=LANG;
-  document.title={ru:"Ведическая натальная карта",et:"Veeda sünnikaart",en:"Jyotish Birth Chart"}[LANG];
+  document.title={ru:"Ведическая натальная карта",et:"Veedalik sünnikaart",en:"Jyotish Birth Chart"}[LANG];
   const sw=document.querySelector("header .seg");if(sw)sw.hidden=LANG_FIXED;
   document.querySelectorAll("[data-i]").forEach(el=>{const v=I18N[LANG][el.dataset.i];if(typeof v==="string")el.textContent=v;});
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===LANG));
